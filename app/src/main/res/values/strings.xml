@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ShopIC</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_brand_list">Brand List</string>
+    <string name="title_activity_Category_list">Category List</string>
+    <string name="action_Brand">Brand List</string>
+    <string name="action_Category">category List</string>
+    <string name="title_activity_brand_stores">BrandStoresActivity</string>
+    <string name="title_activity_category_search">CategorySearchActivity</string>
+</resources>
