@@ -7,6 +7,14 @@
     tools:context="com.example.felker.icshop.CategorySearchActivity"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Retail Category Brand Selector"
+        android:id="@+id/textView1"
+         />
+
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +24,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list" />
+        android:id="@+id/list"
+        tools:listitem="@android:layout/simple_list_item_1"/>
 
 </LinearLayout>

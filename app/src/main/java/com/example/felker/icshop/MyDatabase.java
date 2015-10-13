@@ -137,7 +137,7 @@ public class MyDatabase extends SQLiteAssetHelper {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
         String[] sqlSelect = {"0 _id", "ID", "Description", "MainCategoryID"};
-        String sqlTables = "SubRetailCategory";
+        String sqlTables = "ProductCategory";
         qb.setTables(sqlTables);
         Cursor c = qb.query(db, sqlSelect, "MainCategoryID = ?",  new String[] {mainCatId},
                 null, null, null);
