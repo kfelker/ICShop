@@ -1,11 +1,14 @@
 package com.example.felker.icshop;
 
+import java.util.ArrayList;
+
 /**
  * Created by Felker on 10/11/2015.
  */
 public class MainRetailCategory {
     private String Desc;
     private int ID;
+    private ArrayList<SubRetailCategory> subCatList = new ArrayList<SubRetailCategory>();
 
 
     public int getID() {
@@ -29,4 +32,12 @@ public class MainRetailCategory {
     public String toString() {
         return Desc;
     }
+
+    public ArrayList<SubRetailCategory> getSubCatList() {
+        return subCatList;
+    }
+    public void setSubCatList (ArrayList<SubRetailCategory> subList) {
+        this.subCatList = subList;
+    }
+
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +40,23 @@ public class BrandStoresActivity extends AppCompatActivity {
 
         TextView Brand = (TextView) this.findViewById(R.id.headertext);
         Brand.setText("Stores for:" + strBrand);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // selected item
+                Store clickedObject = (Store) parent.getAdapter().getItem(position);
+
+                String strId = String.valueOf(clickedObject.getID());
+                // Launching new Activity on selecting single List Item
+                Intent i = new Intent(getApplicationContext(), StoreDetailActivity.class);
+                // sending data to new activity
+                i.putExtra("storeID", strId);
+                startActivity(i);
+
+            }
+        });
 
 
     }

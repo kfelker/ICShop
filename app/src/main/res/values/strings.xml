@@ -9,4 +9,6 @@
     <string name="action_Category">category List</string>
     <string name="title_activity_brand_stores">BrandStoresActivity</string>
     <string name="title_activity_category_search">CategorySearchActivity</string>
+    <string name="title_activity_store_detail">StoreDetailActivity</string>
+    <string name="title_activity_category_expand">CategoryExpandActivity</string>
 </resources>

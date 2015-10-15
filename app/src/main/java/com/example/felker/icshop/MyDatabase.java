@@ -159,5 +159,85 @@ public class MyDatabase extends SQLiteAssetHelper {
         cat.setDesc(cursor.getString(2));
         return cat;
     }
+    public Store getStore(String storeID) {
+        Store store = new Store();
 
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String[] sqlSelect = {"0 _id","ID", "BusinessName", "Address", "Hours", "Phone"};
+        String sqlTables = "Business";
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, "ID = ?", new String[]{storeID},
+                null, null, null);
+
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            store.setID(c.getInt(1));
+            store.setName(c.getString(2));
+            store.setAddress(c.getString(3));
+            store.setHours(c.getString(4));
+            store.setPhone(c.getString(5));
+            c.moveToNext();
+        }
+        // make sure to close the cursor
+        c.close();
+        return store;
+    }
+
+    public String getStrBrandsForStore(String storeID) {
+
+        String strBrandList = "";
+
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String sqlState = "SELECT Brand.ID, Brand.Name"
+                + " FROM Business INNER JOIN (Brand INNER JOIN [Business-Brand] ON Brand.ID = [Business-Brand].BrandID) ON Business.ID = [Business-Brand].BusinessID"
+                + " WHERE (((Business.ID)=?))";
+
+        Cursor c = db.rawQuery(sqlState, new String[]{storeID});
+        c.moveToFirst();
+        if (c.getCount()>0) {
+            for(int i=0;i<c.getCount();i++){
+                strBrandList+=c.getString(1);
+                if(i<(c.getCount()-1)){
+                    strBrandList+=",";
+                }
+                c.moveToNext();
+            }
+        }
+        // make sure to close the cursor
+        c.close();
+        return strBrandList;
+    }
+
+    public String getStrCategoriesForStore(String storeID) {
+
+        String strCategoryList = "";
+
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+
+        String sqlState = "  SELECT ProductCategory.ID, ProductCategory.Description, Business.ID"
+                + " FROM Business INNER JOIN (ProductCategory INNER JOIN [Business-ProductCategory] ON ProductCategory.ID = [Business-ProductCategory].ProductCategoryID) ON Business.ID = [Business-ProductCategory].BusinessID"
+                + "  WHERE (((Business.ID)=?))";
+
+        Cursor c = db.rawQuery(sqlState, new String[]{storeID});
+        c.moveToFirst();
+        if (c.getCount()>0) {
+
+            for(int i=0;i<c.getCount();i++){
+                strCategoryList+=c.getString(1);
+                if(i<(c.getCount()-1)){
+                    strCategoryList+=",";
+                }
+                c.moveToNext();
+            }
+        }
+        // make sure to close the cursor
+        c.close();
+        return strCategoryList;
+    }
 }
