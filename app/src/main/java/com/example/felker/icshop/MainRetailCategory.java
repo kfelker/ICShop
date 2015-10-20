@@ -1,6 +1,7 @@
 package com.example.felker.icshop;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Felker on 10/11/2015.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class MainRetailCategory {
     private String Desc;
     private int ID;
-    private ArrayList<SubRetailCategory> subCatList = new ArrayList<SubRetailCategory>();
+    private List<SubRetailCategory> subCatList = new ArrayList<SubRetailCategory>();
 
 
     public int getID() {
@@ -33,10 +34,10 @@ public class MainRetailCategory {
         return Desc;
     }
 
-    public ArrayList<SubRetailCategory> getSubCatList() {
+    public List<SubRetailCategory> getSubCatList() {
         return subCatList;
     }
-    public void setSubCatList (ArrayList<SubRetailCategory> subList) {
+    public void setSubCatList (List<SubRetailCategory> subList) {
         this.subCatList = subList;
     }
 
