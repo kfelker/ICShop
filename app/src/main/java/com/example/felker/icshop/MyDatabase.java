@@ -53,6 +53,32 @@ public class MyDatabase extends SQLiteAssetHelper {
         return Brands;
     }
 
+    public List<Brand> getBrandsSearch(String brandName) {
+        String strBrandSearch;
+        List<Brand> Brands = new ArrayList<Brand>();
+
+        strBrandSearch = brandName;
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+       String[] sqlSelect = {"0 _id", "ID", "Name"};
+        String sqlTables = "Brand";
+        qb.setTables(sqlTables);
+        String []selectionArgs = { "%" + brandName + "%"};
+
+        Cursor c = qb.query(db, sqlSelect, "Name LIKE ?", selectionArgs,
+                null, null, null);
+
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            Brand brand = cursorToBrand(c);
+            Brands.add(brand);
+            c.moveToNext();
+        }
+        // make sure to close the cursor
+        c.close();
+        return Brands;
+    }
     private Brand cursorToBrand(Cursor cursor) {
         Brand brand = new Brand();
         brand.setID(cursor.getInt(1));
@@ -94,7 +120,39 @@ public class MyDatabase extends SQLiteAssetHelper {
         return store;
     }
 
+    public List<Store> getStoresSearch(String storeName) {
+        String strStoreSearch;
+        List<Store> Stores = new ArrayList<Store>();
 
+        strStoreSearch = storeName;
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String[] sqlSelect = {"0 _id", "ID", "BusinessName"};
+        String sqlTables = "Store";
+        qb.setTables(sqlTables);
+        String []selectionArgs = { "%" + storeName + "%"};
+
+        Cursor c = qb.query(db, sqlSelect, "BusinessName LIKE ?", selectionArgs,
+                null, null, null);
+
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            Store store = cursorSearchToStore(c);
+            Stores.add(store);
+            c.moveToNext();
+        }
+        // make sure to close the cursor
+        c.close();
+        return Stores;
+    }
+
+    private Store cursorSearchToStore(Cursor cursor) {
+        Store store = new Store();
+        store.setID(cursor.getInt(1));
+        store.setName(cursor.getString(2));
+        return store;
+    }
 
     public List<MainRetailCategory> getAllMainCategories() {
 
