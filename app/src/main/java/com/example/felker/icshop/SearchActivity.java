@@ -16,12 +16,14 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     Button btnSend;
-    private List<Brand> brands = new ArrayList<Brand>();
-    private List<Store> stores = new ArrayList<Store>();
+    private List<SearchResultsObject> searchDS = new ArrayList<SearchResultsObject>();
     private MyDatabase db;
     private ListView list;
     private String strSearch;
-    private ArrayAdapter<Brand> adapter;
+    public static final int SEARCH_BRAND=1;
+    public static final int SEARCH_STORE=2;
+    public ArrayAdapter<SearchResultsObject> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +31,9 @@ public class SearchActivity extends AppCompatActivity {
 
         //brands =null;
         ListView list = (ListView) findViewById(R.id.listViewBrands);
-        ArrayAdapter<Brand> adapter = new ArrayAdapter<Brand>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, brands);
-        list.setAdapter(adapter);
+        ArrayAdapter<SearchResultsObject> adapter = new ArrayAdapter<SearchResultsObject>(this,
+          android.R.layout.simple_list_item_1, searchDS);
+       list.setAdapter(adapter);
         btnSend = (Button) this.findViewById(R.id.buttonBrandSearch);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -48,26 +50,18 @@ public class SearchActivity extends AppCompatActivity {
                 db = new MyDatabase(getApplicationContext());
                 ListView list = (ListView) findViewById(R.id.listViewBrands);
 
-                ArrayAdapter<Brand> adapter = new ArrayAdapter<Brand>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, brands);
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.rbBrand:
-                        brands = db.getBrandsSearch(strSearch);
-                        adapter = new ArrayAdapter<Brand>(getApplicationContext(),
-                                android.R.layout.simple_list_item_1, brands);
+                        searchDS = db.getSearchResults(strSearch,SEARCH_BRAND);
                         break;
                     case R.id.rbStore:
-                        stores = db.getStoresSearch(strSearch);
-                        adapter = new ArrayAdapter<Brand>(getApplicationContext(),
-                                android.R.layout.simple_list_item_1, brands);
+                        searchDS = db.getSearchResults(strSearch, SEARCH_STORE);
                         break;
                 }
-
+                ArrayAdapter<SearchResultsObject> adapter = new ArrayAdapter<SearchResultsObject>((getApplicationContext()),
+                    android.R.layout.simple_list_item_1, searchDS);
                 list.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-
-
-
 
             }
         });

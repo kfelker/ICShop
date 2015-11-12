@@ -53,32 +53,58 @@ public class MyDatabase extends SQLiteAssetHelper {
         return Brands;
     }
 
-    public List<Brand> getBrandsSearch(String brandName) {
-        String strBrandSearch;
-        List<Brand> Brands = new ArrayList<Brand>();
+    public List<SearchResultsObject> getSearchResults(String strSearchText, int searchType) {
+        String strSearch;
+        List<SearchResultsObject> searchDS = new ArrayList<SearchResultsObject>();
+        String sqlTables = "";
+        String[] sqlSelect = new String[3];
+        String []selectionArgs = new String [1];
+        String likeClause = "";
 
-        strBrandSearch = brandName;
+        strSearch = strSearchText;
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-       String[] sqlSelect = {"0 _id", "ID", "Name"};
-        String sqlTables = "Brand";
+        switch (searchType) {
+            case 1:
+                sqlTables = "Brand";
+                sqlSelect[0] = "0 _id";
+                sqlSelect[1] = "ID";
+                sqlSelect[2] = "Name";
+                selectionArgs[0] = "%" + strSearch + "%";
+                likeClause =  "Name LIKE ?";
+                break;
+            case 2:
+                sqlTables = "Business";
+                sqlSelect[0] = "0 _id";
+                sqlSelect[1] = "ID";
+                sqlSelect[2] = "BusinessName";
+                selectionArgs[0] = "%" + strSearch + "%";
+                likeClause =  "BusinessName LIKE ?";
+                break;
+        }
         qb.setTables(sqlTables);
-        String []selectionArgs = { "%" + brandName + "%"};
-
-        Cursor c = qb.query(db, sqlSelect, "Name LIKE ?", selectionArgs,
+        Cursor c = qb.query(db, sqlSelect, likeClause, selectionArgs,
                 null, null, null);
 
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            Brand brand = cursorToBrand(c);
-            Brands.add(brand);
+            SearchResultsObject ds = cursorToResults(c);
+            searchDS.add(ds);
             c.moveToNext();
         }
         // make sure to close the cursor
         c.close();
-        return Brands;
+        return searchDS;
     }
+
+    private SearchResultsObject cursorToResults(Cursor cursor) {
+        SearchResultsObject ds = new SearchResultsObject();
+        ds.setID(cursor.getInt(1));
+        ds.setName(cursor.getString(2));
+        return ds;
+    }
+
     private Brand cursorToBrand(Cursor cursor) {
         Brand brand = new Brand();
         brand.setID(cursor.getInt(1));
@@ -120,39 +146,6 @@ public class MyDatabase extends SQLiteAssetHelper {
         return store;
     }
 
-    public List<Store> getStoresSearch(String storeName) {
-        String strStoreSearch;
-        List<Store> Stores = new ArrayList<Store>();
-
-        strStoreSearch = storeName;
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
-        String[] sqlSelect = {"0 _id", "ID", "BusinessName"};
-        String sqlTables = "Store";
-        qb.setTables(sqlTables);
-        String []selectionArgs = { "%" + storeName + "%"};
-
-        Cursor c = qb.query(db, sqlSelect, "BusinessName LIKE ?", selectionArgs,
-                null, null, null);
-
-        c.moveToFirst();
-        while (!c.isAfterLast()) {
-            Store store = cursorSearchToStore(c);
-            Stores.add(store);
-            c.moveToNext();
-        }
-        // make sure to close the cursor
-        c.close();
-        return Stores;
-    }
-
-    private Store cursorSearchToStore(Cursor cursor) {
-        Store store = new Store();
-        store.setID(cursor.getInt(1));
-        store.setName(cursor.getString(2));
-        return store;
-    }
 
     public List<MainRetailCategory> getAllMainCategories() {
 
