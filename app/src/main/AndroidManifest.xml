@@ -68,6 +68,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.felker.icshop.MainActivity" />
         </activity>
+        <activity
+            android:name=".SubCatStoresActivity"
+            android:label="@string/title_activity_sub_cat_stores" >
+        </activity>
     </application>
 
 </manifest>
